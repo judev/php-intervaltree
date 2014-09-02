@@ -36,6 +36,16 @@ class IntervalTreeNumericTest extends PHPUnit_Framework_TestCase {
 		$this->assertSame($intervals[1], $results[2]);
 	}
 
+	public function testNumericInclusiveRangeSearch() {
+		$intervals = $this->getNumericInclusiveIntervals();
+		$tree = new IntervalTree($intervals);
+		$results = $tree->search(new NumericRangeInclusive(5, 7));
+		$this->assertCount(3, $results);
+		$this->assertSame($intervals[0], $results[0]);
+		$this->assertSame($intervals[1], $results[1]);
+		$this->assertSame($intervals[2], $results[2]);
+	}
+
 	public function testNumericExclusiveSearch() {
 		$intervals = $this->getNumericExclusiveIntervals();
 		$tree = new IntervalTree($intervals);
@@ -43,6 +53,18 @@ class IntervalTreeNumericTest extends PHPUnit_Framework_TestCase {
 		$this->assertCount(2, $results);
 		$this->assertSame($intervals[0], $results[0]);
 		$this->assertSame($intervals[1], $results[1]);
+	}
+
+	public function testNumericInclusiveSingleItemSearch() {
+		$intervals = array(
+			new NumericRangeInclusive(1, 10),
+		);
+		$tree = new IntervalTree($intervals);
+		$results = $tree->search(4);
+		$this->assertCount(1, $results);
+		$this->assertSame($intervals[0], $results[0]);
+		$results = $tree->search(12);
+		$this->assertCount(0, $results);
 	}
 
 	private function getNumericInclusiveIntervals() {

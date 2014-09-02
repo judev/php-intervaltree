@@ -48,24 +48,7 @@ class IntervalTree {
 			return array();
 		}
 
-		if ($interval instanceof Interval) {
-			$first = $interval->rangeStart();
-			$last = $interval->rangeEnd();
-		}
-		else {
-			$first = $interval;
-			$last = null;
-		}
-
-		if (is_null($last)) {
-			$result = $this->point_search($this->top_node, $first);
-		}
-		else {
-			$result = array();
-			foreach ($interval->rangeIterator() as $j) {
-				$result = array_merge($result, $this->search($j));
-			}
-		}
+		$result = $this->find_intervals($interval);
 		$result = array_values($result);
 
 		usort($result, function($a, $b) {
@@ -120,6 +103,28 @@ class IntervalTree {
 			);
 		});
 		return $intervals[count($intervals) >> 1]->rangeStart();
+	}
+
+	protected function find_intervals($interval) {
+		if ($interval instanceof RangeInterface) {
+			$first = $interval->rangeStart();
+			$last = $interval->rangeEnd();
+		}
+		else {
+			$first = $interval;
+			$last = null;
+		}
+
+		if (is_null($last)) {
+			$result = $this->point_search($this->top_node, $first);
+		}
+		else {
+			$result = array();
+			foreach ($interval->rangeIterator() as $j) {
+				$result = array_merge($result, $this->find_intervals($j));
+			}
+		}
+		return $result;
 	}
 
 	protected function point_search($node, $point) {
