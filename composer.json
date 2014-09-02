@@ -1,0 +1,25 @@
+{
+    "name": "judev/php-intervaltree",
+    "description": "Interval Tree implementation in PHP",
+    "version": "1.0.0",
+    "type": "library",
+    "keywords": ["PHP", "Data Structures"],
+    "homepage": "https://github.com/judev/php-intervaltree",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jude Venn",
+            "homepage": "https://github.com/judev",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+      "psr-4": {
+        "IntervalTree\\": "src/"
+      }
+    },
+    "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "4.*"
+    }
+}
