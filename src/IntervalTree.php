@@ -18,7 +18,7 @@ class IntervalTree {
 	 *
 	 * Pass in an array of RangeInterface compatible objects and
 	 * an optional comparator callable.
-	 * 
+	 *
 	 * @param  array $ranges
 	 * @param  Callable $comparator (optional)
 	 * @return void
@@ -129,23 +129,32 @@ class IntervalTree {
 
 	protected function point_search($node, $point) {
 		$result = array();
+
+		// check whether the node values overlap point.
 		foreach ($node->s_center as $k) {
-			if ($this->compare($k->rangeStart(), $point) <= 0 && $this->compare($point, $k->rangeEnd()) < 0) {
+			if ($this->compare($k->rangeStart(), $point) <= 0 && $this->compare($k->rangeEnd(), $point) > 0) {
 				$result[spl_object_hash($k)] = $k;
 			}
 		}
-		if ($node->left_node && $this->compare($point, $node->left_node->s_max) < 0) {
+
+		// compare point against node center to determine which child
+		// node we should recurse through.
+		$cmp = $this->compare($point, $node->x_center);
+
+		if ($node->left_node && $cmp < 0) {
 			$result = array_merge(
 				$result,
 				$this->point_search($node->left_node, $point, $result)
 			);
 		}
-		if ($node->right_node && $this->compare($node->right_node->x_center, $point) <= 0) {
+
+		if ($node->right_node && $cmp > 0) {
 			$result = array_merge(
 				$result,
 				$this->point_search($node->right_node, $point, $result)
 			);
 		}
+
 		return $result;
 	}
 
@@ -161,7 +170,7 @@ class IntervalTree {
 
 class IntervalTreeNode {
 
-    public $x_center, $s_center, $s_max, $left_node, $right_node;
+	public $x_center, $s_center, $left_node, $right_node;
 
 	public function __construct($x_center, $s_center, $left_node, $right_node) {
 		$this->x_center = $x_center;
@@ -171,13 +180,12 @@ class IntervalTreeNode {
 			return $a < $b ? -1 : ($a > $b ? 1 : 0);
 		});
 		$this->s_center = $s_center;
-		$this->s_max = call_user_func('max', array_map(function($k) {return $k->rangeEnd();}, $s_center));
 		$this->left_node = $left_node;
 		$this->right_node = $right_node;
 	}
 
 	public function dump($depth = 0) {
-		$pad = str_repeat(' ', $depth);
+		$pad = str_repeat('  ', $depth);
 		$contents = array();
 		foreach ($this->s_center as $k) {
 			$contents[] = $k;

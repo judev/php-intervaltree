@@ -75,6 +75,33 @@ class IntervalTreeDateRangeTest extends PHPUnit_Framework_TestCase {
 		$this->assertSame($intervals[1], $results[0]);
 	}
 
+	public function testDateRangeExclusiveSearchRange() {
+		$intervals = $this->getDateRangeExclusiveIntervals();
+		$tree = new IntervalTree($intervals);
+
+		$searchRange = new DateRangeExclusive(
+			date_create('2014-09-04T00:00:00+00:00'),
+			date_create('2014-09-07T00:00:00+00:00')
+		);
+		$results = $tree->search($searchRange);
+		$this->assertCount(2, $results);
+		$this->assertSame($intervals[0], $results[0]);
+		$this->assertSame($intervals[1], $results[1]);
+	}
+
+	public function testDateRangeExclusiveSearchEndOfRange() {
+		$intervals = $this->getDateRangeExclusiveIntervals();
+		$tree = new IntervalTree($intervals);
+
+		$searchRange = new DateRangeExclusive(
+			date_create('2014-09-09T00:00:00+00:00'),
+			date_create('2014-09-11T00:00:00+00:00')
+		);
+		$results = $tree->search($searchRange);
+		$this->assertCount(1, $results);
+		$this->assertSame($intervals[2], $results[0]);
+	}
+
 	private function getDateRangeInclusiveIntervals() {
 		return $this->intervals('IntervalTree\DateRangeInclusive');
 	}
