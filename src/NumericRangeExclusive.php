@@ -22,7 +22,7 @@ class NumericRangeExclusive implements RangeInterface
 
     /**
      * @param int $start
-     * @param int end
+     * @param int $end
      * @param int $step
      */
     public function __construct($start, $end = null, $step = 1)

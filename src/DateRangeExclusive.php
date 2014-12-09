@@ -25,7 +25,7 @@ class DateRangeExclusive implements RangeInterface
 
     /**
      * @param \DateTime     $start
-     * @param \DateTime end
+     * @param \DateTime     $end
      * @param \DateInterval $step
      */
     public function __construct(DateTime $start, DateTime $end = null, DateInterval $step = null)
