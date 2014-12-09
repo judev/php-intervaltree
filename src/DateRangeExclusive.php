@@ -3,36 +3,78 @@
 use DateTime;
 use DateInterval;
 
-class DateRangeExclusive implements RangeInterface {
+/**
+ * Date range which excludes intersecting dates.
+ */
+class DateRangeExclusive implements RangeInterface
+{
+    /**
+     * @var \DateTime
+     */
+    protected $start;
 
-	protected $start, $end, $step;
+    /**
+     * @var \DateTime
+     */
+    protected $end;
 
-	public function __construct(DateTime $start, DateTime $end = null, DateInterval $step = null) {
-		$this->start = clone $start;
-		$this->end = clone $end;
-		$this->step = $step ?: new DateInterval('P1D');
-	}
+    /**
+     * @var \DateInterval
+     */
+    protected $step;
 
-	public function rangeStart() {
-		return $this->start;
-	}
+    /**
+     * @param \DateTime     $start
+     * @param \DateTime end
+     * @param \DateInterval $step
+     */
+    public function __construct(DateTime $start, DateTime $end = null, DateInterval $step = null)
+    {
+        $this->start = clone $start;
+        $this->end = clone $end;
+        $this->step = $step ?: new DateInterval('P1D');
+    }
 
-	public function rangeEnd() {
-		return $this->end;
-	}
+    /**
+     * {@inheritDoc}
+     *
+     * @return \DateTime
+     */
+    public function getStart()
+    {
+        return $this->start;
+    }
 
-	public function rangeIterator() {
-		$idate = clone $this->rangeStart();
-		while ($idate < $this->rangeEnd()) {
-			yield $idate;
-			$idate->add($this->step);
-		}
-	}
+    /**
+     * {@inheritDoc}
+     *
+     * @return \DateTime
+     */
+    public function getEnd()
+    {
+        return $this->end;
+    }
 
-	public function __toString() {
-		return $this->start->format('Y-m-d').' .. '.$this->end->format('Y-m-d');
-	}
+    /**
+     * {@inheritDoc}
+     *
+     * @return \Generator
+     */
+    public function iterable()
+    {
+        $date = clone $this->getStart();
 
+        while ($date < $this->getEnd()) {
+            yield $date;
+            $date->add($this->step);
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->start->format('Y-m-d').' .. '.$this->end->format('Y-m-d');
+    }
 }
-
-

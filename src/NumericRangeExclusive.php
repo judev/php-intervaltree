@@ -1,36 +1,71 @@
 <?php namespace IntervalTree;
 
-use DateTime;
-use DateInterval;
+class NumericRangeExclusive implements RangeInterface
+{
+    /**
+     * @var int
+     */
+    protected $start;
 
-class NumericRangeExclusive implements RangeInterface {
+    /**
+     * @var int
+     */
+    protected $end;
 
-	protected $start, $end, $step;
+    /**
+     * @var int
+     */
+    protected $step;
 
-	public function __construct($start, $end = null, $step = 1) {
-		$this->start = $start;
-		$this->end = $end;
-		$this->step = $step;
-	}
+    /**
+     * @param int $start
+     * @param int end
+     * @param int $step
+     */
+    public function __construct($start, $end = null, $step = 1)
+    {
+        $this->start = $start;
+        $this->end = $end;
+        $this->step = $step;
+    }
 
-	public function rangeStart() {
-		return $this->start;
-	}
+    /**
+     * @return int
+     *
+     * {@inheritDoc}
+     */
+    public function getStart()
+    {
+        return $this->start;
+    }
 
-	public function rangeEnd() {
-		return $this->end;
-	}
+    /**
+     * {@inheritDoc}
+     *
+     * @return int
+     */
+    public function getEnd()
+    {
+        return $this->end;
+    }
 
-	public function rangeIterator() {
-		for ($i = $this->rangeStart(); $i < $this->rangeEnd(); $i += $this->step) {
-			yield $i;
-		}
-	}
+    /**
+     * {@inheritDoc}
+     *
+     * @return \Generator
+     */
+    public function iterable()
+    {
+        for ($i = $this->getStart(); $i < $this->getEnd(); $i += $this->step) {
+            yield $i;
+        }
+    }
 
-	public function __toString() {
-		return $this->start.'..'.$this->end;
-	}
-
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->start.'..'.$this->end;
+    }
 }
-
-

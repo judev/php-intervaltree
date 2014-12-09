@@ -18,7 +18,7 @@ class IntervalTreeDateRangeTest extends PHPUnit_Framework_TestCase {
 			date_create('2014-09-01T04:15:00+00:00'),
 		);
 		$range = new DateRangeInclusive($expected[0], $expected[5], new DateInterval('PT15M'));
-		foreach ($range->rangeIterator() as $value) {
+		foreach ($range->iterable() as $value) {
 			$this->assertEquals(array_shift($expected), $value);
 		}
 		$this->assertEquals(0, count($expected));
@@ -34,7 +34,8 @@ class IntervalTreeDateRangeTest extends PHPUnit_Framework_TestCase {
 		);
 		$end = date_create('2014-09-01T04:15:00+00:00');
 		$range = new DateRangeExclusive($expected[0], $end, new DateInterval('PT15M'));
-		foreach ($range->rangeIterator() as $value) {
+
+		foreach ($range->iterable() as $value) {
 			$this->assertEquals(array_shift($expected), $value);
 		}
 		$this->assertEquals(0, count($expected));
