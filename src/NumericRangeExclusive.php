@@ -1,5 +1,8 @@
 <?php namespace IntervalTree;
 
+/**
+ * Numeric range excluding intersecting numbers.
+ */
 class NumericRangeExclusive implements RangeInterface
 {
     /**

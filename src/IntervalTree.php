@@ -11,7 +11,15 @@
  */
 class IntervalTree
 {
-    protected $top_node, $comparator;
+    /**
+     * @var \IntervalTree\TreeNode
+     */
+    protected $top_node,
+
+    /**
+     * @var callable
+     */
+    $comparator;
 
     /**
      * IntervalTree constructor.
