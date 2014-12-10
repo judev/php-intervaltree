@@ -11,7 +11,7 @@ class IntervalTreeNumericTest extends PHPUnit_Framework_TestCase {
 	public function testNumericRangeInclusiveIteration() {
 		$expected = array(10, 12, 14, 16, 18, 20);
 		$range = new NumericRangeInclusive(10, 20, 2);
-		foreach ($range->rangeIterator() as $value) {
+		foreach ($range->iterable() as $value) {
 			$this->assertEquals(array_shift($expected), $value);
 		}
 		$this->assertEquals(0, count($expected));
@@ -20,7 +20,7 @@ class IntervalTreeNumericTest extends PHPUnit_Framework_TestCase {
 	public function testNumericRangeExclusiveIteration() {
 		$expected = array(10, 12, 14, 16, 18);
 		$range = new NumericRangeExclusive(10, 20, 2);
-		foreach ($range->rangeIterator() as $value) {
+		foreach ($range->iterable() as $value) {
 			$this->assertEquals(array_shift($expected), $value);
 		}
 		$this->assertEquals(0, count($expected));
