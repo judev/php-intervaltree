@@ -14,12 +14,12 @@ class IntervalTree
     /**
      * @var \IntervalTree\TreeNode
      */
-    protected $top_node,
+    protected $top_node;
 
     /**
      * @var callable
      */
-    $comparator;
+    protected $comparator;
 
     /**
      * IntervalTree constructor.
@@ -103,6 +103,11 @@ class IntervalTree
         $s_right = array();
 
         foreach ($intervals as $k) {
+            if ($k->getStart() > $k->getEnd()) {
+                throw new NegativeRangeException(
+                    sprintf('Range is negative (maybe you entered the range in reverse order?)')
+                );
+            }
             if ($this->compare($k->getEnd(), $x_center) < 0) {
                 $s_left[] = $k;
             } elseif ($this->compare($k->getStart(), $x_center) > 0) {
