@@ -11,8 +11,8 @@ class IntervalTreeNegativeRangeTest extends PHPUnit_Framework_TestCase
     public function testNegativeRangeThrowsException()
     {
         $dateRange = new DateRangeExclusive(
-            date_create('2014-09-01T03:00:00+00:00'),
-            date_create('2014-01-01T03:15:00+00:00')
+            date_create('2014-09-01T03:00:00+00:00'), // Range start
+            date_create('2014-01-01T03:15:00+00:00')  // Range end
         );
 
         $tree = new IntervalTree(array($dateRange));
