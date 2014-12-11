@@ -105,7 +105,7 @@ class IntervalTree
         foreach ($intervals as $k) {
             if ($k->getStart() > $k->getEnd()) {
                 throw new NegativeRangeException(
-                    sprintf('Range is negative (maybe you entered the range in reverse order?)')
+                    'Range is negative (maybe you entered the range in reverse order?)'
                 );
             }
             if ($this->compare($k->getEnd(), $x_center) < 0) {
