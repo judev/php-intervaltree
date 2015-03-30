@@ -34,19 +34,6 @@ class IntervalTree
      */
     public function __construct(array $ranges, callable $comparator = null)
     {
-        if (is_null($comparator)) {
-            $comparator = function ($a, $b) {
-                if ($a < $b) {
-                    return -1;
-                }
-                if ($a > $b) {
-                    return 1;
-                }
-
-                return 0;
-            };
-        }
-
         $this->comparator = $comparator;
 
         $this->top_node = $this->divide_intervals($ranges);
@@ -215,6 +202,16 @@ class IntervalTree
      */
     protected function compare($a, $b)
     {
+        if (is_null($this->comparator)) {
+            if ($a < $b) {
+                return -1;
+            }
+            if ($a > $b) {
+                return 1;
+            }
+            return 0;
+        }
+
         return call_user_func($this->comparator, $a, $b);
     }
 }
